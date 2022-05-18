@@ -36,10 +36,10 @@ namespace HomeworkAss2.Controllers
             {
                 switch (sortOrder.ToLower())
                 {
-                    case "id":
+                    case "id desc":
                         {
                             // modify contacts to be ordered by Id
-                            contacts = contacts.OrderBy(x => x.Id).ToArray();
+                            contacts = contacts.OrderByDescending(x => x.Id).ToArray();
                             break;
                         }
                     case "name desc":
