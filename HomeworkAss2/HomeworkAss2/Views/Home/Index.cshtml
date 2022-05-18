@@ -1,0 +1,44 @@
+﻿@model IEnumerable<HomeworkAss2.Models.Contact>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<body>
+   <table border="1">
+    
+      <tr>
+        <th>
+            @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.SortIdBy })
+        </th>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.SortNameBy })
+        </th>
+        <th>
+            @Html.ActionLink("City", "Index", new { sortOrder = ViewBag.SortCityBy })
+        </th>
+        <th>
+            @Html.ActionLink("State", "Index", new { sortOrder = ViewBag.SortStateBy })
+        </th>
+        <th>
+            @Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.SortPhoneBy })
+        </th>
+        <th>Action</th>
+      </tr>
+    
+    <tbody>
+      @foreach (var contact in Model)
+     {
+       <tr>   
+         <td>@contact.Id</td>
+         <td>@contact.Name</td>
+         <td>@contact.City</td>
+         <td>@contact.State</td>
+         <td>@contact.Phone</td>
+       </tr>   
+     }
+     </tbody>
+     
+   </table>
+</body>
+</html>
