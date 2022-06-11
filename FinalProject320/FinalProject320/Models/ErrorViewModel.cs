@@ -6,6 +6,6 @@ namespace FinalProject320.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        public string Message { get; set; }
+        public string Message { get; set; } //add for validation?
     }
 }

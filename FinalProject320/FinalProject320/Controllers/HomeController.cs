@@ -57,86 +57,6 @@ namespace FinalProject320.Controllers
                 return View(model);
             }
 
-            
-
-            //    if (sortOrder != null)
-            //    {
-            //        switch (sortOrder.ToLower())
-            //        {
-            //            case "Id desc":
-            //                {
-            //                // modify contacts to be ordered by Id
-            //                context.Gears = context.Gears.OrderByDescending(x => x.Id);
-            //                    break;
-            //                }
-            //            case "name desc":
-            //                {
-            //                    contacts = contacts.OrderByDescending(x => x.Name);
-            //                    break;
-            //                }
-
-            //            case "city desc":
-            //                {
-            //                    contacts = contacts.OrderByDescending(x => x.City);
-            //                    break;
-            //                }
-            //            case "city":
-            //                {
-            //                    contacts = contacts.OrderBy(x => x.City);
-            //                    break;
-            //                }
-            //            case "state desc":
-            //                {
-            //                    contacts = contacts.OrderByDescending(x => x.State);
-            //                    break;
-            //                }
-            //            case "state":
-            //                {
-            //                    contacts = contacts.OrderBy(x => x.State);
-            //                    break;
-            //                }
-            //            case "phone desc":
-            //                {
-            //                    contacts = contacts.OrderByDescending(x => x.Phone);
-            //                    break;
-            //                }
-            //            case "phone":
-            //                {
-            //                    contacts = contacts.OrderBy(x => x.Phone);
-            //                    break;
-            //                }
-            //            default:
-            //              
-            //                {
-            //                    contacts = contacts.OrderBy(x => x.Name);
-            //                    break;
-            //                }
-            //        }
-            //MusicInstrumentsDBContext context = new MusicInstrumentsDBContext();
-            //List<MusicalObjectModel> instruments = context.MusicalObjectModels.ToList();
-
-            //var musicObj = new MusicalObjectModel();
-            //foreach (MusicalObjectModel gear in instruments)
-            //{
-            //    musicObj.Name = gear.Name;
-            //    musicObj.Description = gear.Description;
-            //    musicObj.Price = gear.Price;
-            //    musicObj.Category = gear.Category;
-            //    musicObj.ProductCount = gear.ProductCount;
-            //}
-
-            //if (context.Gears.Any())
-            //{
-            //    foreach (var x in context.Gears)
-            //    {
-            //        musicObj.Name = gear.Name;
-            //        musicObj.Description = gear.Description;
-            //        musicObj.Price = gear.Price;
-            //        musicObj.Category = gear.Category;
-            //        musicObj.ProductCount = gear.ProductCount;
-            //    }
-
-            //}
         }
         public IActionResult Delete(int id)
         {
@@ -148,12 +68,12 @@ namespace FinalProject320.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Search(string search)
         {
-            MusicInstrumentsContext musicInstrumentsContext = new MusicInstrumentsContext();
-            Gear gear = musicInstrumentsContext.Gears.Single(inst => inst.Id == id);
+            MusicInstrumentsContext context = new MusicInstrumentsContext();
+            IQueryable<Gear> gears = context.Gears.Where(inst => inst.Name.Contains(search));
 
-            return View(gear);
+            return View(gears);
         }
 
         public IActionResult Privacy()
@@ -172,30 +92,28 @@ namespace FinalProject320.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveProduct(IFormCollection formCollection)
+        public IActionResult SaveProduct(Gear gear)
         {
             using (var context = new MusicInstrumentsContext())
             {
-                var musicObj = new MusicalObjectModel();
+                var instrument = new Gear();
+                instrument.Name = gear.Name;
+                instrument.Description = gear.Description;
+                instrument.Price = Convert.ToDecimal(gear.Price);
+                instrument.Category = gear.Category;
+                instrument.ProductCount = Convert.ToInt32(gear.ProductCount);
 
-                musicObj.Name = formCollection["Name"];
-                musicObj.Description = formCollection["Description"];
-                musicObj.Price = Convert.ToDecimal(formCollection["Price"]);
-                musicObj.Category = formCollection["Category"];
-                musicObj.ProductCount = Convert.ToInt32(formCollection["ProductCount"]);
-
-                var instrument = new Db.Gear();
-                instrument.Name = musicObj.Name;
-                instrument.Description = musicObj.Description;
-                instrument.Price = musicObj.Price;
-                instrument.Category = musicObj.Category;
-                instrument.ProductCount = musicObj.ProductCount;
-
-                context.Gears.Add(instrument);
-                context.SaveChanges();
-            }
-
-            return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    context.Gears.Add(instrument);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
+            } 
         }
 
         [HttpGet]
@@ -208,19 +126,27 @@ namespace FinalProject320.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditProduct(IFormCollection formCollection)
+        public IActionResult EditProduct(Gear gear)
         {
             using (var context = new MusicInstrumentsContext())
             {
-                int id = Convert.ToInt32(formCollection["Id"]);
-                var instrument = context.Gears.Single(inst => inst.Id == id);
-                instrument.Name = formCollection["Name"];
-                instrument.Description = formCollection["Description"];
-                instrument.Price = Convert.ToDecimal(formCollection["Price"]);
-                instrument.Category = formCollection["Category"];
-                instrument.ProductCount = Convert.ToInt32(formCollection["ProductCount"]);
+                int id = Convert.ToInt32(gear.Id);
+                var instrument = new Gear();
+                instrument.Name = gear.Name;
+                instrument.Description = gear.Description;
+                instrument.Price = Convert.ToDecimal(gear.Price);
+                instrument.Category = gear.Category;
+                instrument.ProductCount = Convert.ToInt32(gear.ProductCount);
 
-                context.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
             }
 
             return RedirectToAction("Index");

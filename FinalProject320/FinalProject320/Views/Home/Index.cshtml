@@ -34,21 +34,17 @@
         <div class="btn btn-success">
             <a asp-action="SaveProduct">Add Product(s)</a>
         </div>
-         <div class="btn btn-success">
-            <a asp-action="EditProductView">Edit Product(s)</a>
-        </div>
-        <div class="btn btn-success">
-            <a asp-action="DeleteProductView">Delete Product(s)</a>
-        </div>
+
         <div class="btn btn-success">
             <a asp-action="Search">Search</a>
         </div>
 
     </div>
-
+    <hr />
    
-
-   <table border="1">
+    
+   <table width=100%><tr><td width=100%>
+    <table border=1 align=center>
     
       <tr>
         <th>
@@ -66,7 +62,7 @@
         <th>
             @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.SortQuantityBy })
         </th>
-        <th>Edit/Delete</th>
+        <th></th>
       </tr>
     
     <tbody>
@@ -75,14 +71,16 @@
        <tr>   
          <td>@gear.Name</td>
          <td>@gear.Description</td>
-         <td>@gear.Price</td>
+         <td>@Math.Round(@gear.Price, 2)</td>
          <td>@gear.Category</td>
          <td>@gear.ProductCount</td>
          <td>@Html.ActionLink("Delete", "Delete", new { id = @gear.Id }) / @Html.ActionLink("Edit", "EditProduct", new { id = @gear.Id })</td>
        </tr>   
      }
     </tbody>
-   </table>
+   </table></td></tr>
+</table>
 </body>
+
     
 </html>
