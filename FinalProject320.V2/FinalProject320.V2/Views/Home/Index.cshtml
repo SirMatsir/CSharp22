@@ -1,0 +1,85 @@
+﻿@using FinalProject320.V2.Controllers
+@model FinalProject320.V2.Models.IndexModel
+
+@{
+    //Layout = null;
+    ViewData["Title"] = "Home Page";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Index</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        .btn a {
+            color: white;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="text-center">
+        <h2>My Inventory</h2>
+
+
+        <div class="btn btn-success">
+            <a asp-action="SaveProduct">Add Product(s)</a>
+        </div>
+         <div class="btn btn-success">
+            <a asp-action="EditProductView">Edit Product(s)</a>
+        </div>
+        <div class="btn btn-success">
+            <a asp-action="DeleteProductView">Delete Product(s)</a>
+        </div>
+        <div class="btn btn-success">
+            <a asp-action="Search">Search</a>
+        </div>
+        <div class="btn btn-success">
+            <a asp-action="List">List</a>
+        </div>
+    </div>
+</body>
+<body>
+   <table border="1">
+    
+      <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.SortNameBy })
+        </th>
+        <th>
+            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.SortDescriptionBy })
+        </th>
+        <th>
+            @Html.ActionLink("Value", "Index", new { sortOrder = ViewBag.SortValueBy })
+        </th>
+        <th>
+            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.SortCategoryBy })
+        </th>
+        <th>
+            @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.SortQuantityBy })
+        </th>
+        <th>Edit/Delete</th>
+      </tr>
+ </body>
+<tbody>
+      @foreach (var gear in Model.GearItems)
+     {
+       <tr>   
+         <td>@gear.Name</td>
+         <td>@gear.Description</td>
+         <td>@gear.Price</td>
+         <td>@gear.Category</td>
+         <td>@gear.ProductCount</td>
+       </tr>   
+     }
+    </tbody>
+</html>
