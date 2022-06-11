@@ -47,6 +47,38 @@ namespace FinalProject320.Controllers
                         model.GearItems = context.Gears.OrderByDescending(x => x.Name).ToList();
                         break;
 
+                    case "description":
+                        model.GearItems = context.Gears.OrderBy(x => x.Description).ToList();
+                        break;
+
+                    case "description desc":
+                        model.GearItems = context.Gears.OrderByDescending(x => x.Description).ToList();
+                        break;
+
+                    case "price":
+                        model.GearItems = context.Gears.OrderBy(x => x.Price).ToList();
+                        break;
+
+                    case "price desc":
+                        model.GearItems = context.Gears.OrderByDescending(x => x.Price).ToList();
+                        break;
+
+                    case "category":
+                        model.GearItems = context.Gears.OrderBy(x => x.Category).ToList();
+                        break;
+
+                    case "category desc":
+                        model.GearItems = context.Gears.OrderByDescending(x => x.Category).ToList();
+                        break;
+
+                    case "productcount":
+                        model.GearItems = context.Gears.OrderBy(x => x.ProductCount).ToList();
+                        break;
+
+                    case "productcount desc":
+                        model.GearItems = context.Gears.OrderByDescending(x => x.ProductCount).ToList();
+                        break;
+
                     default:
                         model.GearItems = context.Gears.OrderBy(x => x.Name).ToList();
                         break;
@@ -119,8 +151,8 @@ namespace FinalProject320.Controllers
         [HttpGet]
         public IActionResult EditProduct(int id)
         {
-            MusicInstrumentsContext musicInstrumentsContext = new MusicInstrumentsContext();
-            Gear gear = musicInstrumentsContext.Gears.Single(inst => inst.Id == id);
+            MusicInstrumentsContext context = new MusicInstrumentsContext();
+            Gear gear = context.Gears.Single(inst => inst.Id == id);
 
             return View(gear);
         }
@@ -131,13 +163,14 @@ namespace FinalProject320.Controllers
             using (var context = new MusicInstrumentsContext())
             {
                 int id = Convert.ToInt32(gear.Id);
-                var instrument = new Gear();
+                var instrument = context.Gears.Single(inst => inst.Id == id);
                 instrument.Name = gear.Name;
                 instrument.Description = gear.Description;
                 instrument.Price = Convert.ToDecimal(gear.Price);
                 instrument.Category = gear.Category;
                 instrument.ProductCount = Convert.ToInt32(gear.ProductCount);
 
+                // validate form data
                 if (ModelState.IsValid)
                 {
                     context.SaveChanges();
@@ -148,15 +181,7 @@ namespace FinalProject320.Controllers
                     return View();
                 }
             }
-
-            return RedirectToAction("Index");
         }
-        //edit MusicalObject already in sql db
-
-        //delete MusicalObject from sql db
-
-        //search MusicalObject in sql db
-
-        //list sql db of MusicalObject
+        //TADAH!
     }
 }
