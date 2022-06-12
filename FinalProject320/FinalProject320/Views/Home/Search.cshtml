@@ -1,5 +1,90 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using FinalProject320.Controllers
+@model FinalProject320.Models.IndexModel
+
 @{
+    Layout = null;
+    
 }
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Search Result</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        .btn a {
+            color: white;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+ <div class="text-center">
+   <h2>My Inventory</h2>
+   <div class="row">
+     <div class="col-md-4">
+                     
+         <form asp-controller="Home" asp-action="Search" method="get">
+              <p>
+                <input asp-for="searchStr" class="form-control" />
+                <input type="submit" value="Search"/>
+              </p>
+              </form>
+      </div>
+   </div>
+ </div>
+  <hr />
+   
+    
+   <table width=100%><tr><td width=100%>
+    <table border=1 align=center>
+    
+      <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.SortNameBy })
+        </th>
+        <th>
+            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.SortDescriptionBy })
+        </th>
+        <th>
+            @Html.ActionLink("Value", "Index", new { sortOrder = ViewBag.SortPriceBy })
+        </th>
+        <th>
+            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.SortCategoryBy })
+        </th>
+        <th>
+            @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.SortProductCountBy })
+        </th>
+        <th></th>
+      </tr>
+    
+    <tbody>
+      @foreach (var gear in Model.GearItems)
+     {
+       <tr>   
+         <td>@gear.Name</td>
+         <td>@gear.Description</td>
+         <td>@Math.Round(@gear.Price, 2)</td>
+         <td>@gear.Category</td>
+         <td>@gear.ProductCount</td>
+         <td>@Html.ActionLink("Delete", "Delete", new { id = @gear.Id }) / @Html.ActionLink("Edit", "EditProduct", new { id = @gear.Id })</td>
+       </tr>   
+     }
+    </tbody>
+   </table></td></tr>
+</table>
+<div>
+    <a asp-action="Index">Back to Home Page</a>
+</div>
+</body>
+
+    
+</html>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;// Add this to the top for EF
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using FinalProject320.Db;
@@ -100,13 +100,7 @@ namespace FinalProject320.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Search(string search)
-        {
-            MusicInstrumentsContext context = new MusicInstrumentsContext();
-            IQueryable<Gear> gears = context.Gears.Where(inst => inst.Name.Contains(search));
-
-            return View(gears);
-        }
+        
 
         public IActionResult Privacy()
         {
@@ -146,6 +140,24 @@ namespace FinalProject320.Controllers
                     return View();
                 }
             } 
+        }
+        public IActionResult Search(string searchStr)
+        {
+            using (var context = new MusicInstrumentsContext())
+            {
+                var model = from m in context.Gears
+                            select m;
+
+                if (!string.IsNullOrEmpty(searchStr))
+                {
+                    model = model.Where(inst => inst.Name!.Contains(searchStr));
+                }
+                IndexModel indexModel = new IndexModel();
+                indexModel.GearItems = model.ToList();
+
+                return View(indexModel);
+
+            }
         }
 
         [HttpGet]

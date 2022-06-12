@@ -35,9 +35,15 @@
             <a asp-action="SaveProduct">Add Product(s)</a>
         </div>
 
-        <div class="btn btn-success">
-            <a asp-action="Search">Search</a>
-        </div>
+        @*<div class="btn btn-success">*@
+            @*<a asp-action="Search">Search</a>*@
+            <form asp-controller="Home" asp-action="Search">
+              <p>
+                <input type="text" name="searchStr" />
+                <input type="submit" value="Search" />
+              </p>
+              </form>
+        @*</div>*@
 
     </div>
     <hr />
